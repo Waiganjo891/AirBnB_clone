@@ -1,12 +1,4 @@
 #!/usr/bin/python3
-"""
-my_module.py - A module containing a base class for models.
-This module provides a BaseModel class that can be
-used as a base class for other models.
-Usage:
-    from my_module import BaseModel
-    class MyDerivedModel(BaseModel):
-"""
 import uuid
 from datetime import datetime
 import models
@@ -43,6 +35,9 @@ class BaseModel:
             my_model = BaseModel()
         """
         time_format = "%Y-%m-%dT%H:%M:%S.%f"
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.utcnow()
+        self.updated_at = datetime.utcnow()
         if kwargs:
             for key, value in kwargs.items():
                 if key == "__class__":
@@ -51,10 +46,7 @@ class BaseModel:
                     setattr(self, key, datetime.strptime(value, time_format))
                 else:
                     setattr(self, key, value)
-        else:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.utcnow()
-            self.updated_at = datetime.utcnow()
+
         models.storage.new(self)
 
     def save(self):
