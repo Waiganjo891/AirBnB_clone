@@ -7,20 +7,23 @@ from models import storage
 
 class HBNBCommand(cmd.Cmd):
     """
-    Simple command processor example.
+    HBNBCommand class provides a simple command-line interface
+    for creating, managing, and interacting with instances of
+    different classes like BaseModel.
     """
     prompt = "(hbnb)"
     valid_classes = ["BaseModel"]
 
     def emptyline(self):
         """
-        Do nothing when an empty line is entered
+        Do nothing when an empty line is entered.
         """
         pass
 
     def do_quit(self, arg):
         """
         Quit command to exit the program
+        Usage: quit
         """
         return True
 
@@ -57,6 +60,7 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, arg):
         """
         Show the string representation of an instance
+        Usage: show <class name> <instance id>
         """
         commands = shlex.split(arg)
 
@@ -76,7 +80,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, arg):
         """
-        Delete
+        Delete an instance.
+        Usage: destroy <class name> <instance id>
         """
         commands = shlex.split(arg)
 
