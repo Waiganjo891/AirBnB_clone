@@ -13,7 +13,7 @@ class HBNBCommand(cmd.Cmd):
     different classes like BaseModel.
     """
     prompt = "(hbnb)"
-    valid_classes = ["BaseModel", "user"]
+    valid_classes = ["BaseModel", "User"]
 
     def emptyline(self):
         """
