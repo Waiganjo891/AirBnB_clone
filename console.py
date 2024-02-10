@@ -148,12 +148,17 @@ class HBNBCommand(cmd.Cmd):
         }
         if incoming_method in method_dict.keys():
             if incoming_method != "update":
-                return method_dict[incoming_method]("{} {}".format(incoming_class_name, incoming_xtra_arg))
+                return method_dict[incoming_method]("{} {}".format(
+                    incoming_class_name, incoming_xtra_arg))
             else:
                 obj_id = all_args[0]
                 attribute_name = all_args[1]
                 attribute_value = all_args[2]
-                return method_dict[incoming_method]("{} {} {} {}".format(incoming_class_name, obj_id, attribute_name, attribute_value))
+                return method_dict[incoming_method]("{} {} {} {}".format(
+                    incoming_class_name,
+                    obj_id,
+                    attribute_name,
+                    attribute_value))
         print("*** Unknown syntax: {}".format(arg))
         return False
 
