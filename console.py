@@ -133,6 +133,9 @@ class HBNBCommand(cmd.Cmd):
                     print(str(value))
 
     def default(self, arg):
+        """
+        Define default
+        """
         arg_list = arg.split('.')
         incoming_class_name = arg_list[0]
         command = arg_list[1].split('(')
@@ -163,6 +166,9 @@ class HBNBCommand(cmd.Cmd):
         return False
 
     def do_count(self, arg):
+        """
+        Define do_count
+        """
         objects = storage.all()
         commands = shlex.split(arg)
         incoming_class_name = commands[0]
