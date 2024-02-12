@@ -47,11 +47,10 @@ class HBNBCommand(cmd.Cmd):
         """
         print("Quit command to exit the program")
 
-    def do_EOF(self, arg):
+    def do_EOF(self, line):
         """
         Handle the End-of-File condition.
         """
-        print()
         return True
 
     def do_create(self, arg):
