@@ -119,3 +119,67 @@ first_name: string - empty string
 last_name: string - empty string
 Update FileStorage to manage correctly serialization and deserialization of User.
 Update your command interpreter (console.py) to allow show, create, destroy, update and all used with User.
+
+Task 9
+Write all those classes that inherit from BaseModel:
+State (models/state.py):
+Public class attributes:
+name: string - empty string
+City (models/city.py):
+Public class attributes:
+state_id: string - empty string: it will be the State.id
+name: string - empty string
+Amenity (models/amenity.py):
+Public class attributes:
+name: string - empty string
+Place (models/place.py):
+Public class attributes:
+city_id: string - empty string: it will be the City.id
+user_id: string - empty string: it will be the User.id
+name: string - empty string
+description: string - empty string
+number_rooms: integer - 0
+number_bathrooms: integer - 0
+max_guest: integer - 0
+price_by_night: integer - 0
+latitude: float - 0.0
+longitude: float - 0.0
+amenity_ids: list of string - empty list: it will be the list of Amenity.id later
+Review (models/review.py):
+Public class attributes:
+place_id: string - empty string: it will be the Place.id
+user_id: string - empty string: it will be the User.id
+text: string - empty string
+
+Task 10
+Update FileStorage to manage correctly serialization and deserialization of all our new classes: Place, State, City, Amenity and Review
+Update your command interpreter (console.py) to allow those actions: show, create, destroy, update and all with all classes created previously.
+
+Task 11
+Update your command interpreter (console.py) to retrieve all instances of a class by using: <class name>.all().
+
+Task 12
+Update your command interpreter (console.py) to retrieve the number of instances of a class: <class name>.count().
+
+Task 13
+Update your command interpreter (console.py) to retrieve an instance based on its ID: <class name>.show(<id>).
+Errors management must be the same as previously.
+
+Task 14
+Update your command interpreter (console.py) to destroy an instance based on his ID: <class name>.destroy(<id>).
+Errors management must be the same as previously.
+
+Task 15
+Update your command interpreter (console.py) to update an instance based on his ID: <class name>.update(<id>, <attribute name>, <attribute value>).
+Errors management must be the same as previously.
+
+Task 16
+Update your command interpreter (console.py) to update an instance based on his ID with a dictionary: <class name>.update(<id>, <dictionary representation>).
+Errors management must be the same as previously.
+
+Task 17
+Write all unittests for console.py, all features!
+For testing the console, you should “intercept” STDOUT of it, we highly recommend you to use:
+with patch('sys.stdout', new=StringIO()) as f:
+    HBNBCommand().onecmd("help show")
+Otherwise, you will have to re-write the console by replacing precmd by default.
