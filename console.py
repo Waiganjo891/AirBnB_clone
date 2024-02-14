@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-A python program called console.py that contains the entry point of the command interpreter
+A python program called console.py that contains
+the entry point of the command interpreter
 """
 import cmd
 import shlex
