@@ -75,7 +75,10 @@ class TestUser(unittest.TestCase):
         Create a new User instance with arguments
         """
         test_user = User(
-                email="waiganjo@gmail.com", password="Root@", first_name="Elijah" last_name="Waiganjo"
+                email="waiganjo@gmail.com",
+                password="Root@",
+                first_name="Elijah",
+                last_name="Waiganjo"
         )
         self.assertEqual(test_user.email, "waiganjo@gmail.com")
         self.assertEqual(test_user.password, "Root@")
@@ -87,7 +90,10 @@ class TestUser(unittest.TestCase):
         Create a new User instance with specific attribute values
         """
         test_user = User(
-                email="waiganjo@gmail.com", password="Root@", first_name="Elijah" last_name="Waiganjo"
+                email="waiganjo@gmail.com",
+                password="Root@",
+                first_name="Elijah",
+                last_name="Waiganjo"
         )
         user_dict = test_user.to_dict()
         self.assertEqual(user_dict['email'], "waiganjo@gmail.com")
