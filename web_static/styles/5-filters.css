@@ -5,7 +5,7 @@
 	border: 1px solid #DDDDDD;
 	border-radius: 4px;
 	display: flex;
-	align-items: center;
+        align-items: center;
 }
 button{
 	font-size: 18px;
@@ -25,19 +25,28 @@ button:hover{
 .amenities{
 	width: 25%;
 	height: 100%;
+
 }
 .locations{
 	border-right: 1px solid #DDDDDD;
+	display: grid;
+	place-content: center;
 }
 .amenities{
 	margin-right: auto;
+	display: grid;
+	place-content: center;
 }
 .locations h3,
 .amenities h3{
 	font-weight: 600;
+	padding: 0;
+	margin: 0;
 }
 .locations h4,
 .amenities h4{
 	font-weight: 400;
 	font-size: 14px;
+	padding: 0;
+	margin: 0;
 }
