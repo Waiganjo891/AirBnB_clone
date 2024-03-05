@@ -5,6 +5,8 @@ the entry point of the command interpreter
 """
 import cmd
 import shlex
+import re
+import ast
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -142,7 +144,6 @@ class HBNBCommand(cmd.Cmd):
         command = arg_list[1].split('(')
         incoming_method = command[0]
         incoming_xtra_arg = command[1].split(')')[0]
-        all_args = incoming_xtra_arg.split(',')
         method_dict = {
                 'all': self.do_all,
                 'show': self.do_show,
@@ -155,14 +156,9 @@ class HBNBCommand(cmd.Cmd):
                 return method_dict[incoming_method]("{} {}".format(
                     incoming_class_name, incoming_xtra_arg))
             else:
-                obj_id = all_args[0]
-                attribute_name = all_args[1]
-                attribute_value = all_args[2]
                 return method_dict[incoming_method]("{} {} {} {}".format(
                     incoming_class_name,
-                    obj_id,
-                    attribute_name,
-                    attribute_value))
+                    obj_id))
         print("*** Unknown syntax: {}".format(arg))
         return False
 
@@ -210,13 +206,26 @@ class HBNBCommand(cmd.Cmd):
                 print("** value missing **")
             else:
                 obj = objects[key]
-                attr_name = commands[2]
-                attr_value = commands[3]
-                try:
-                    attr_value = eval(attr_value)
-                except Exception:
-                    pass
-                setattr(obj, attr_name, attr_value)
+                curly_braces = re.search(r"\{(.*?)\}", arg)
+                if curly_braces:
+                    str_data = curly_braces.group(1)
+                    arg_dict = ast.literal_eval("{" + str_data + "}")
+                    attribute_names = list(arg_dict.keys())
+                    attribute_values = list(arg_dict.values())
+                    attr_name1 = attribute_names[0]
+                    attr_value1 = attribute_values[0]
+                    attr_name2 = attribute_names[1]
+                    attr_value2 = attribute_values[1]
+                    setattr(obj, attr_name1, attr_value1)
+                    setattr(obj, attr_name2, attr_value2)
+                else:
+                    attr_name = commands[2]
+                    attr_value = commands[3]
+                    try:
+                        attr_value = eval(attr_value)
+                    except Exception:
+                        pass
+                    setattr(obj, attr_name, attr_value)
                 obj.save()
 
 
