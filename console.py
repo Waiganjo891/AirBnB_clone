@@ -187,13 +187,13 @@ class HBNBCommand(cmd.Cmd):
                 try:
                     if isinstance(arg_dict, str):
                         attributes = arg_dict
-                        return method_dict[incoming_method]("{} {} {} {}".format(
+                        return method_dict[incoming_method]("{} {} {}".format(
                             incoming_class_name,
                             attributes,
                             obj_id))
                     elif isinstance(arg_dict, dict):
                         dict_attributes = arg_dict
-                        return method_dict[incoming_method]("{} {}".format(
+                        return method_dict[incoming_method]("{} {} {}".format(
                             incoming_class_name,
                             dict_attributes,
                             obj_id))
