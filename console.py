@@ -25,6 +25,24 @@ def split_curly_braces(incoming_xtra_arg):
     curly_braces = re.search(r"\{(.*?)\}", incoming_xtra_arg)
     if curly_braces:
         id_with_comma = shlex.split(incoming_xtra_arg[:curly_braces.span()[0]])
+        id = [i.strip(",") for i in id_with_comma][0]
+        str_data = curly_braces.group(1)
+        try:
+            arg_dict = str.literal_eval("{" + str_data + "}")
+        except Exception:
+            print()
+            return
+        return id, arg_dict
+    else:
+        commands = incoming_xtra_arg.split(",")
+        try:
+            id = commands[0]
+            attr_name = commands[1]
+            attr_value = commands[2]
+            return f"{id}", f"{attr_name} {attr_valu}"
+        except Exception:
+            print("** argument missing **")
+
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -165,9 +183,22 @@ class HBNBCommand(cmd.Cmd):
                 return method_dict[incoming_method]("{} {}".format(
                     incoming_class_name, incoming_xtra_arg))
             else:
-                return method_dict[incoming_method]("{} {} {} {}".format(
-                    incoming_class_name,
-                    obj_id))
+                obj_id, arg_dict = split_curly_braces(incoming_xtra_arg)
+                try:
+                    if isinstance(arg_dict, str):
+                        attributes = arg_dict
+                        return method_dict[incoming_method]("{} {} {} {}".format(
+                            incoming_class_name,
+                            attributes,
+                            obj_id))
+                    elif isinstance(arg_dict, dict):
+                        dict_attributes = arg_dict
+                        return method_dict[incoming_method]("{} {}".format(
+                            incoming_class_name,
+                            dict_attributes,
+                            obj_id))
+            except Exception:
+                print("** argument missing**")
         print("*** Unknown syntax: {}".format(arg))
         return False
 
