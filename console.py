@@ -17,6 +17,15 @@ from models.review import Review
 from models import storage
 
 
+def split_curly_braces(incoming_xtra_arg):
+    """
+    Splits the curly braces for the update method
+    incoming_xtra_method
+    """
+    curly_braces = re.search(r"\{(.*?)\}", incoming_xtra_arg)
+    if curly_braces:
+        id_with_comma = shlex.split(incoming_xtra_arg[:curly_braces.span()[0]])
+
 class HBNBCommand(cmd.Cmd):
     """
     HBNBCommand class provides a simple command-line interface
