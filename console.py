@@ -197,8 +197,8 @@ class HBNBCommand(cmd.Cmd):
                             incoming_class_name,
                             dict_attributes,
                             obj_id))
-            except Exception:
-                print("** argument missing**")
+                except Exception:
+                    print("** argument missing**")
         print("*** Unknown syntax: {}".format(arg))
         return False
 
