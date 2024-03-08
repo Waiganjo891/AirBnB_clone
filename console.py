@@ -17,31 +17,38 @@ from models.review import Review
 from models import storage
 
 
-def split_curly_braces(incoming_xtra_arg):
+def split_curly_braces(e_arg):
     """
     Splits the curly braces for the update method
     incoming_xtra_method
     """
-    curly_braces = re.search(r"\{(.*?)\}", incoming_xtra_arg)
+    curly_braces = re.search(r"\{(.*?)\}", e_arg)
     if curly_braces:
-        id_with_comma = shlex.split(incoming_xtra_arg[:curly_braces.span()[0]])
+        id_with_comma = shlex.split(e_arg[:curly_braces.span()[0]])
         id = [i.strip(",") for i in id_with_comma][0]
         str_data = curly_braces.group(1)
         try:
-            arg_dict = str.literal_eval("{" + str_data + "}")
+            arg_dict = ast.literal_eval("{" + str_data + "}")
         except Exception:
-            print()
+            print("** invalid dictionary format **")
             return
         return id, arg_dict
     else:
-        commands = incoming_xtra_arg.split(",")
-        try:
-            id = commands[0]
-            attr_name = commands[1]
-            attr_value = commands[2]
+        commands = e_arg.split(",")
+        if commands:
+            try:
+                id = commands[0]
+            except Exception:
+                return "", ""
+            try:
+                attr_name = commands[1]
+            except Exception:
+                return id, ""
+            try:
+                attr_value = commands[2]
+            except Exception:
+                return id, attr_name
             return f"{id}", f"{attr_name} {attr_valu}"
-        except Exception:
-            print("** argument missing **")
 
 
 class HBNBCommand(cmd.Cmd):
@@ -167,10 +174,10 @@ class HBNBCommand(cmd.Cmd):
         Define default
         """
         arg_list = arg.split('.')
-        incoming_class_name = arg_list[0]
+        cls_nm = arg_list[0]
         command = arg_list[1].split('(')
-        incoming_method = command[0]
-        incoming_xtra_arg = command[1].split(')')[0]
+        cmd_met = command[0]
+        e_arg = command[1].split(')')[0]
         method_dict = {
                 'all': self.do_all,
                 'show': self.do_show,
@@ -178,29 +185,27 @@ class HBNBCommand(cmd.Cmd):
                 'update': self.do_update,
                 'count': self.do_count
         }
-        if incoming_method in method_dict.keys():
-            if incoming_method != "update":
-                return method_dict[incoming_method]("{} {}".format(
-                    incoming_class_name, incoming_xtra_arg))
+        if cmd_met in method_dict.keys():
+            if cmd_met != "update":
+                return method_dict[cmd_met]("{} {}".format(
+                    cls_nm, e_arg))
             else:
-                obj_id, arg_dict = split_curly_braces(incoming_xtra_arg)
+                if not cls_nm:
+                    print("** class name missing **")
+                    return
                 try:
-                    if isinstance(arg_dict, str):
-                        attributes = arg_dict
-                        return method_dict[incoming_method]("{} {} {}".format(
-                            incoming_class_name,
-                            attributes,
-                            obj_id))
-                    elif isinstance(arg_dict, dict):
-                        dict_attributes = arg_dict
-                        return method_dict[incoming_method]("{} {} {}".format(
-                            incoming_class_name,
-                            dict_attributes,
-                            obj_id))
+                    obj_id, arg_dict = split_curly_braces(e_arg)
                 except Exception:
-                    print("** argument missing**")
-        print("*** Unknown syntax: {}".format(arg))
-        return False
+                    pass
+                try:
+                    call = method_dict[cmd_met]
+                    return call("{} {} {}".format(
+                        cls_nm, obj_id, arg_dict))
+                except Exception:
+                    pass
+        else:
+            print("*** Unknown syntax: {}".format(arg))
+            return False
 
     def do_count(self, arg):
         """
@@ -248,16 +253,23 @@ class HBNBCommand(cmd.Cmd):
                 obj = objects[key]
                 curly_braces = re.search(r"\{(.*?)\}", arg)
                 if curly_braces:
-                    str_data = curly_braces.group(1)
-                    arg_dict = ast.literal_eval("{" + str_data + "}")
-                    attribute_names = list(arg_dict.keys())
-                    attribute_values = list(arg_dict.values())
-                    attr_name1 = attribute_names[0]
-                    attr_value1 = attribute_values[0]
-                    attr_name2 = attribute_names[1]
-                    attr_value2 = attribute_values[1]
-                    setattr(obj, attr_name1, attr_value1)
-                    setattr(obj, attr_name2, attr_value2)
+                    try:
+                        str_data = curly_braces.group(1)
+                        arg_dict = ast.literal_eval("{" + str_data + "}")
+                        attribute_names = list(arg_dict.keys())
+                        attribute_values = list(arg_dict.values())
+                        try:
+                            attr_name1 = attribute_names[0]
+                            attr_value1 = attribute_values[0]
+                            setattr(obj, attr_name1, attr_value1)
+                        except Exception:
+                            pass
+                        try:
+                            attr_name2 = attribute_names[1]
+                            attr_value2 = attribute_values[1]
+                            setattr(obj, attr_name2, attr_value2)
+                        except Exception:
+                            pass
                 else:
                     attr_name = commands[2]
                     attr_value = commands[3]
