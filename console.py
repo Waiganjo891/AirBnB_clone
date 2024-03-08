@@ -270,6 +270,8 @@ class HBNBCommand(cmd.Cmd):
                             setattr(obj, attr_name2, attr_value2)
                         except Exception:
                             pass
+                    except Exception:
+                        pass
                 else:
                     attr_name = commands[2]
                     attr_value = commands[3]
